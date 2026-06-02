@@ -56,50 +56,52 @@
 
 ## M2 — Motor háptico nativo
 
-[X] `HapticsConstants.kt` — MAX_AMPLITUDE 255, MIN_AMPLITUDE 20, LEVEL_COUNT 10, duraciones base, AMPLITUDE_LEVELS[]
+[X] `HapticsConstants.kt` — MAX_AMPLITUDE 255, MIN_AMPLITUDE 20, LEVEL_COUNT 10, AMPLITUDE_LEVELS[]
 [X] `VivroPattern.kt` — class VivroPattern + enum PatternCategory (SUAVE, ASCENSO, CIMA) + enum RampType
 [X] `RampFunctions.kt` — typealias RampFunction + 6 implementaciones (LINEAR_UP, LINEAR_DOWN, PARABOLA, HYPERBOLA, LOGARITHMIC, EXPONENTIAL)
-[X] `HapticsEngine.kt` — VibrationEffect.createWaveform con amplitudes reales; fallback PWM vía duty-cycle para hasAmplitudeControl() == false
-[X] `HapticsViewModel.kt` — AndroidViewModel + StateFlow<HapticsState> con isPlaying, activePattern, intensityLevel, activeRamp, onTimeMs, offTimeMs
+[X] `HapticsEngine.kt` — VibrationEffect.createWaveform con amplitudes; fallback PWM duty-cycle para hasAmplitudeControl() == false
+[X] `HapticsViewModel.kt` — AndroidViewModel + StateFlow<HapticsState> con todos los controles
 [ ] Smoke test háptico en device *(checkpoint manual Gastón)*
 
 > Completado por: haptics-engineer | 2026-06-02
-> Nota: el ramp se prepende como N pasos de fade-in; el repeat index se desplaza N posiciones para que el loop omita el ramp inicial.
+> Nota: ramp se prepende como N pasos de fade-in; repeat index se desplaza N posiciones para que el loop omita el ramp.
 
 ---
 
 ## M3 — Controles frecuencia e intensidad (UI)
 
-[ ] `FrequencyControls.kt` — sliders tiempo-on / tiempo-off
-[ ] `IntensityControls.kt` — 10 niveles discretos
-[ ] Cableado UI → HapticsViewModel → HapticsEngine
-[ ] Botón play/stop + indicador de estado animado
+[X] `IntensitySlider.kt` — 10 dots táctiles, fill progresivo, color configurable
+[X] `FrequencyControls.kt` — sliders on-time / off-time con labels dinámicos en ms
+[X] `PlayStopButton.kt` — botón circular con animación pulse activa cuando isPlaying
+[X] `MainActivity.kt` — pantalla prototipo funcional cableada a HapticsViewModel + PatternsRegistry
+[ ] Smoke test UI + háptico en device *(checkpoint manual Gastón)*
 
-> Responsable: haptics-engineer + compose-ui-designer
+> Completado por: compose-ui-designer | 2026-06-02
+> Nota: pantalla de prueba será reemplazada por MainScreen completo en M6.
 
 ---
 
-## M4 — Rampas de transición
+## M4 — Rampas de transición (UI)
 
-[ ] 6 curvas matemáticas implementadas y validadas
-[ ] `RampSelector.kt` — UI 6 chips con preview de curva
-[ ] Integración rampa al engine (fade-in / fade-out por ciclo)
-[ ] QA en device: diferencia perceptible entre curvas
+[ ] `RampSelector.kt` — 6 chips en grid 2×3, SVG preview de curva por tipo
+[ ] Integración RampSelector en pantalla principal
+[ ] QA en device: diferencia perceptible entre las 6 curvas
 
-> Responsable: haptics-engineer
+> Responsable: compose-ui-designer + haptics-engineer
 
 ---
 
 ## M5 — 21 patrones preset
 
-[ ] `PatternsRegistry.kt` — 21 patrones con naming definitivo
-[ ] 7 patrones SUAVE: Caricia, Susurro, Roce, Murmullo, Latido, Onda, Deriva
-[ ] 7 patrones ASCENSO: Oleada, Pulso, Marea, Vértigo, Espiral, Tormenta, Tsunami
-[ ] 7 patrones CIMA: Pulse Nova, Big Bang, Earthquake, Volcano, Supernova, Singularity, Aftershock
-[ ] `PatternSelector.kt` — grid por categoría
-[ ] QA háptico de los 21 patrones en device
+[X] `PatternsRegistry.kt` — 21 patrones con waveforms diseñados
+[X] 7 patrones SUAVE: Caricia, Susurro, Roce, Murmullo, Latido, Onda, Deriva
+[X] 7 patrones ASCENSO: Oleada, Pulso, Marea, Vértigo, Espiral, Tormenta, Tsunami
+[X] 7 patrones CIMA: Pulse Nova, Big Bang, Earthquake, Volcano, Supernova, Singularity, Aftershock
+[ ] `PatternSelector.kt` — grid por categoría con selección activa
+[ ] QA háptico de los 21 patrones en device *(checkpoint manual Gastón)*
 
-> Responsable: haptics-engineer (skill: pattern-composer)
+> Completado parcialmente por: haptics-engineer | 2026-06-02
+> Pendiente: PatternSelector UI (M6) y QA en device.
 
 ---
 
@@ -109,6 +111,9 @@
 [ ] `VivroSkin.kt` data class + `SkinRegistry.kt`
 [ ] Skin Boudoir completo: `#0A0008` / `#E8185C` / `#C4A84A` + canvas orquídea
 [ ] Skin Seda & Piel: `#150C0C` / `#C0143C` / `#F2A59D` + canvas curvas cálidas
+[ ] `MainScreen.kt` — layout completo con OrganicCanvas, PatternSelector, controles
+[ ] `PatternSelector.kt` — grid por categoría
+[ ] `RampSelector.kt` — 6 chips con SVG curves
 [ ] Selector de skins in-app
 [ ] Persistencia skin activo en DataStore
 
@@ -143,7 +148,7 @@
 [ ] Ícono orgánico (consistente con skin Boudoir)
 [ ] Splash screen
 [ ] Firma APK *(keystore — manual Gastón)*
-[ ] `./gradlew assembleRelease` → BUILD SUCCESSFUL
+[ ] `./gradlew assembleDebug` → BUILD SUCCESSFUL
 [ ] QA completo en device real
 [ ] APK distribuible
 
@@ -159,3 +164,4 @@
 - **Android Studio:** disponible para Windows, Mac y Linux. No existe versión para tablet/teléfono.
 - **VibratorManager:** requiere API 31+. Para API 26-30 se usa `Vibrator` directamente (deprecated pero funcional).
 - **Repeat index con ramp prepend:** al anteponer N pasos de ramp, el repeat index se desplaza a `rampSteps + pattern.repeat` para que el loop omita el fade-in inicial.
+- **Amplitudes en PatternsRegistry:** los valores son relativos al máximo (255). HapticsEngine los escala automáticamente según el intensityLevel seleccionado.
