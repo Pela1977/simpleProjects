@@ -64,58 +64,89 @@
 
 ## M10 — Creador de patrones custom
 
-### Tres modos de creación
+### Modo A: Whiteboard (con nodos Catmull-Rom)
 
-#### Modo A: Whiteboard (principal)
-El usuario dibuja la forma de onda directamente en un canvas:
-- **Eje X** = tiempo (el ancho del canvas representa la duración total del ciclo)
+El usuario dibuja la curva de amplitud con el dedo sobre un canvas:
+- **Eje X** = tiempo (el ancho del canvas = duración del ciclo)
 - **Eje Y** = intensidad (arriba = máximo, abajo = silencio)
-- El dedo dibuja la curva de amplitud
-- Cuando el dedo toca = motor encendido; cuando se levanta = off
-- La curva se muestrea cada ~20ms para generar `timings[] + amplitudes[]`
-- Grid de referencia (líneas de cuadrícula) para orientación
-- Botón “sentir” para previsualizar hapticamente mientras dibújas
-- Implementación: `WaveformCanvas.kt` con `Modifier.pointerInput` + `Canvas` composable
+- Grid de referencia con ticks de tiempo
 
-#### Modo B: Tap-to-record
-- Un área grande tactil en el centro
-- Cada toque = pulso (duración = tiempo que se mantiene el dedo)
+**Post-dibujo — edición por nodos:**
+- El sistema detecta automáticamente los puntos clave (picos, valles, inflexiones, breaks)
+- Se coloca un **nodo editable (handle)** en cada punto clave
+- Entre nodos: interpolación **Catmull-Rom spline** (suave, pasa por los puntos exactos)
+- El usuario puede:
+  - Arrastrar nodos para ajustar la curva
+  - Tocar entre dos nodos para agregar uno nuevo
+  - Mantener presionado un nodo para eliminarlo
+- Botón “Sentir”: previsualiza hápticamente en tiempo real mientras se edita
+- Botón “Limpiar”: vuelve a dibujo libre
+- Implementación: `WaveformCanvas.kt` con `Modifier.pointerInput` + `DrawScope`, detección de extremos locales
+
+### Modo B: Tap-to-record con control de velocidad de captura
+
+El usuario toca un área grande para grabar el ritmo:
+- **Velocidad de captura** seleccionable antes de grabar: `0.25× / 0.5× / 1× / 2×`
+  - `0.5×` = grabás en cámara lenta (más fácil ser preciso)
+  - Los timings se normalizan al finalizar para que el patrón suene a `1×`
+  - Ejemplo: grabás a 0.5× un pulso de 200ms reales → el patrón queda con 100ms
+- Cada toque = pulso (duración = tiempo que el dedo está presionado)
 - El gap entre toques = pausa
-- La intensidad puede fijarse antes o variarse con la presión (si el device la soporta)
-- Preview visual de la onda generada en tiempo real
-- Implementación: `TapRecorder.kt` con `detectTapGestures` + timer
+- Visualización de la onda generada en tiempo real (vista previa animada)
+- Botón “Deshacerútilmo toque” durante la grabación
+- Implementación: `TapRecorder.kt` con `SystemClock.elapsedRealtime()` + factor de normalización
 
-#### Modo C: Editor por segmentos
-- Lista de segmentos: cada uno tiene duración (ms) + amplitud (0-255)
-- Drag-to-reorder, swipe-to-delete
-- Agregar segmento: aparece row con sliders
-- Vista de onda vectorial arriba que se actualiza en tiempo real
-- El modo más técnico y preciso
-- Implementación: `SegmentEditor.kt` con `LazyColumn` + `DragAndDropColumn`
+### Modo C: Editor de segmentos + Fractal DNA + Layer Mixer
 
-### Flujo de creación
+#### Editor base
+- Lista de segmentos: cada uno tiene `durationMs` + `amplitude`
+- Drag-to-reorder con haptic feedback al levantar
+- Swipe-to-delete con confirmación
+- Agregar segmento al final o entre dos existentes
+- Vista de onda vectorial en la parte superior, se actualiza en tiempo real
+
+#### Feature 1: Fractal / Pattern DNA
+Tomás una secuencia base y la replicar a múltiples escalas de tiempo:
+- Escalás el patrón base a `×0.5`, `×1` y `×2` (o cualquier combinación)
+- Las versiones se intercalan en el timeline creando un patrón fractal
+- Slider de "profundidad fractal" (1 = solo base, 3 = 3 niveles de anidado)
+- Resultado: complejidad orgánica y autósimilar desde una forma simple
+- Ejemplo: base `[on 80ms amp 150, off 40ms]` → fractal 2 niveles:
+  `[on 40ms, off 20ms, on 80ms amp 150, off 40ms, on 160ms amp 100, off 80ms]`
+- Implementación: `FractalExpander.kt` — función pura `(base: List<Segment>, depth: Int) -> List<Segment>`
+
+#### Feature 2: Layer Mixer (capas de patrones)
+Mezclador de patrones existentes como capas:
+- Podés combinar hasta 4 patrones (de la biblioteca preset o propios) en capas
+- Cada capa tiene su propio slider de intensidad (0–100%)
+- Las amplitudes se suman por frame, clampeadas a 255
+- Preview háptico del resultado mezclado en tiempo real
+- Ejemplo: Caricia × 40% + Pulso × 60% = patrón hírido suave-rítmico
+- El resultado se puede guardar como nuevo patrón propio
+- Implementación: `PatternMixer.kt` — alinea arrays por mínimo común múltiplo de duración
+
+### Flujo de creación (todos los modos)
 ```
 [+] Nuevo patrón
        ↓
-   elegir modo
-  (A | B | C)
+   elegir modo: Whiteboard | Tap | Segmentos
        ↓
-  crear waveform
+  crear / grabar / mezclar
        ↓
-  sentir (preview)
+  Sentir (preview háptico)
        ↓
   (opcional) refinar en editor de segmentos
        ↓
-  nombrar + categorizar
+  Nombrar + categorizar (SUAVE / ASCENSO / CIMA)
        ↓
-  guardar local  →  [publicar en comunidad]
+  Guardar local  ►  [Publicar en comunidad]
 ```
 
 ### Persistencia local
-- **Room DB** (no DataStore — los patrones son listas de longitud variable)
-- Entidad: `CustomPatternEntity` con `timingsJson` + `amplitudesJson` (TypeConverter)
-- DAO: CRUD + query por categoría + query por `isPublished`
-- Repository: `CustomPatternRepository` que expone `Flow<List<CustomPattern>>`
+- **Room DB** (no DataStore — arrays de longitud variable)
+- `CustomPatternEntity`: id, name, description, category, timingsJson, amplitudesJson, repeat, createdAt, isPublished
+- `CustomPatternDao`: CRUD + `Flow<List<CustomPatternEntity>>`
+- `CustomPatternRepository`: convierte entidades → `VivroPattern` (misma clase del engine)
 - Los patrones propios aparecen en el selector principal con badge 📌
 
 ---
@@ -124,36 +155,36 @@ El usuario dibuja la forma de onda directamente en un canvas:
 
 > **Backend TBD** — a decidir cuando Gastón tenga PC
 
-Opciones evaluadas:
-- **Firebase** — Firestore + Auth (Google Sign-In). SDK oficial Kotlin/Android. Gratis hasta escala moderada.
-- **Supabase** — PostgreSQL + REST + Realtime. Open source, self-hosteable, TypeScript edge functions.
+Opciones:
+- **Firebase** — Firestore + Auth Google. SDK oficial Kotlin/Android.
+- **Supabase** — PostgreSQL + REST + Realtime. Open source, self-hosteable.
 
-### Endpoints necesarios (independientes del stack)
+### Endpoints necesarios
 - `POST /patterns` — subir patrón (autenticado)
-- `GET /patterns` — listar comunidad (paginado, filtros por categoría/popularidad/nuevo)
+- `GET /patterns` — listar comunidad (paginado, filtros)
 - `GET /patterns/:id` — patrón individual
 - `POST /patterns/:id/like` — dar like
 - `GET /users/:id/patterns` — patrones de un usuario
 
 ### Autenticación
-- Google Sign-In (cero fricción en Android, no requiere email/password)
-- Alias público opcional (ej. “vibro_gaston”)
+- Google Sign-In (cero fricción en Android)
+- Alias público opcional
 
 ### Moderación
-- Los patrones se publican inmediatamente pero pueden ser reportados
-- Flag `isFlagged` en base de datos — revisado manualmente
-- Los patrones CIMA van con advertencia de intensidad
+- Publicación inmediata + sistema de reportes
+- Flag `isFlagged` — revisión manual
+- Patrones CIMA muestran advertencia de intensidad
 
 ---
 
 ## M12 — UI comunidad
 
-- **Pantalla Comunidad**: tab en bottom nav (icono globo)
-- **Browse**: grid de patrones, filtros (Nuevo / Popular / Categoría)
-- **Card de patrón**: nombre, autor, categoría, likes, mini-preview waveform
+- **Tab “Comunidad”** en bottom nav (icono globo)
+- **Browse**: grid con filtros (Nuevo / Popular / Categoría)
+- **Card de patrón**: nombre, autor, categoría, likes, mini-waveform vectorial
 - **Preview antes de descargar**: sentir el patrón antes de guardarlo
-- **Publicar**: botón en pantalla de creación, agrega nombre del autor y descripción
-- **Perfil**: mis patrones publicados, likes recibidos, patrones descargados
+- **Publicar**: desde creador propio → comunidad (nombre, descripción, categoría)
+- **Perfil**: mis patrones publicados, likes recibidos, biblioteca descargada
 
 ---
 
@@ -165,20 +196,20 @@ Opciones evaluadas:
 | LINEAR_DOWN | Decrece lineal | Ataque directo, salida suave |
 | PARABOLA | x² — lento al inicio | Sorpresa tarda en llegar |
 | HYPERBOLA | 1-(1-x)² — rápido al inicio | Impacto inmediato, plateau |
-| LOGARITHMIC | ln(x) — subida rápida | Sube rapido, se mantiene |
-| EXPONENTIAL | e^x — surge al final | Calma, calma... IMPACTO |
+| LOGARITHMIC | ln(x) — subida rápida | Sube rápido, se mantiene |
+| EXPONENTIAL | e^x — surge al final | Calma, calma… IMPACTO |
 
 ---
 
 ## Skins
 
 ### Incluidos (M6)
-- **Boudoir** (default): `#0A0008` / `#E8185C` / `#C4A84A` — orquídea animada, tipografía elegante
-- **Seda & Piel**: `#150C0C` / `#C0143C` / `#F2A59D` — curvas cálidas, sensual
+- **Boudoir** (default): `#0A0008` / `#E8185C` / `#C4A84A` — orquídea animada
+- **Seda & Piel**: `#150C0C` / `#C0143C` / `#F2A59D` — curvas cálidas
 
 ### Adicionales (M7)
 - 2 skins claros (paleta luminosa, uso diurno)
-- 2 skins explícitos (formas más directas, activo/off toggle en settings)
+- 2 skins explícitos (formas más directas)
 
 ---
 
