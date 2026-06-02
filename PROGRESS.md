@@ -56,14 +56,15 @@
 
 ## M2 — Motor háptico nativo
 
-[ ] `HapticsConstants.kt` — MAX_AMPLITUDE, MIN_AMPLITUDE, LEVEL_COUNT, duraciones base
-[ ] `VivroPattern.kt` — data class + enum PatternCategory (SUAVE, ASCENSO, CIMA)
-[ ] `RampFunctions.kt` — typealias RampFunction + 6 implementaciones
-[ ] `HapticsEngine.kt` — wrapper VibrationEffect + fallback PWM
-[ ] `HapticsViewModel.kt` — StateFlow: isPlaying, activePattern, intensityLevel, activeRamp
+[X] `HapticsConstants.kt` — MAX_AMPLITUDE 255, MIN_AMPLITUDE 20, LEVEL_COUNT 10, duraciones base, AMPLITUDE_LEVELS[]
+[X] `VivroPattern.kt` — class VivroPattern + enum PatternCategory (SUAVE, ASCENSO, CIMA) + enum RampType
+[X] `RampFunctions.kt` — typealias RampFunction + 6 implementaciones (LINEAR_UP, LINEAR_DOWN, PARABOLA, HYPERBOLA, LOGARITHMIC, EXPONENTIAL)
+[X] `HapticsEngine.kt` — VibrationEffect.createWaveform con amplitudes reales; fallback PWM vía duty-cycle para hasAmplitudeControl() == false
+[X] `HapticsViewModel.kt` — AndroidViewModel + StateFlow<HapticsState> con isPlaying, activePattern, intensityLevel, activeRamp, onTimeMs, offTimeMs
 [ ] Smoke test háptico en device *(checkpoint manual Gastón)*
 
-> Responsable: haptics-engineer
+> Completado por: haptics-engineer | 2026-06-02
+> Nota: el ramp se prepende como N pasos de fade-in; el repeat index se desplaza N posiciones para que el loop omita el ramp inicial.
 
 ---
 
@@ -156,3 +157,5 @@
 - **hasAmplitudeControl():** no universal. Siempre implementar fallback PWM.
 - **Emulador:** no tiene motor háptico real. Todo QA háptico requiere device físico.
 - **Android Studio:** disponible para Windows, Mac y Linux. No existe versión para tablet/teléfono.
+- **VibratorManager:** requiere API 31+. Para API 26-30 se usa `Vibrator` directamente (deprecated pero funcional).
+- **Repeat index con ramp prepend:** al anteponer N pasos de ramp, el repeat index se desplaza a `rampSteps + pattern.repeat` para que el loop omita el fade-in inicial.
