@@ -19,7 +19,7 @@ App Android nativa para controlar el motor de vibración del teléfono con fines
 | M2 | haptics-engineer | Motor háptico nativo + VibrationEffect | ⬜ Pendiente |
 | M3 | haptics-engineer + compose-ui-designer | Controles frecuencia/intensidad | ⬜ Pendiente |
 | M4 | haptics-engineer | 6 rampas de transición + preview visual | ⬜ Pendiente |
-| M5 | haptics-engineer | 20 patrones preset | ⬜ Pendiente |
+| M5 | haptics-engineer | 21 patrones preset | ⬜ Pendiente |
 | M6 | compose-ui-designer | Skins Boudoir + Seda & Piel, UI completa | ⬜ Pendiente |
 | M7 | compose-ui-designer | Skins claros y explícitos adicionales | ⬜ Pendiente |
 | M8 | haptics-engineer | Favoritos y patrones custom | ⬜ Pendiente |
@@ -27,92 +27,107 @@ App Android nativa para controlar el motor de vibración del teléfono con fines
 
 ---
 
-## Los 20 patrones — naming definitivo
+## Los 21 patrones — naming definitivo
 
-Nombres evocativos del placer, el éxtasis y el deseo. Organizados en tres categorías.
+Tres categorías que narran una progresión de intensidad:
 
-### CIRCULATORIO (7) — sensaciones del cuerpo
-| ID | Nombre | Vibe |
-|----|--------|------|
-| `latido` | **Latido** | Pulso cardíaco lento, íntimo |
-| `pulso` | **Pulso** | Ritmo constante, creciente |
-| `oleada` | **Oleada** | Ola de sensación que sube y baja |
-| `arrebato` | **Arrebato** | Arranque súbito de intensidad |
-| `ansia` | **Ansia** | Urgencia, deseo que no puede esperar |
-| `umbral` | **Umbral** | Borde del límite, acumulación |
-| `cima` | **Cima** | El pico, el clímax |
+### SUAVE (7) — inicio, exploración, calidez
 
-### ELEMENTO (7) — naturaleza sensual
-| ID | Nombre | Vibe |
-|----|--------|------|
-| `brasa` | **Brasa** | Calor lento, profundo, persistente |
-| `lava` | **Lava** | Flujo denso y caliente, imparable |
-| `vapor` | **Vapor** | Suave, envolvente, cálido |
-| `llama` | **Llama** | Intensidad que oscila |
-| `marea` | **Marea** | Ritmo largo, hipnótico |
-| `tormenta` | **Tormenta** | Caótico, eléctrico, salvaje |
-| `ardor` | **Ardor** | Quemazón del deseo, sin pausa |
+Sensaciones sutiles, casi imperceptibles. El punto de partida.
 
-### FENOMENO (6) — estados de éxtasis
-| ID | Nombre | Vibe |
-|----|--------|------|
-| `extasis` | **Éxtasis** | El momento cumbre, sostenido |
-| `vertigo` | **Vértigo** | Mareo de placer, pérdida de control |
-| `frenesi` | **Frenesí** | Aceleración hasta el límite |
-| `trance` | **Trance** | Repetición hipnótica, meditativa |
-| `delirio` | **Delirio** | Caos de sensaciones mezcladas |
-| `temblor` | **Temblor** | Vibración fina y profunda, el estremecimiento final |
+| ID | Nombre | Vibe háptico |
+|----|--------|--------------|
+| `caricia` | **Caricia** | Toque suavísimo, intermitente, casi no se siente |
+| `susurro` | **Susurro** | Vibración muy fina y rápida, baja amplitud constante |
+| `roce` | **Roce** | Pulsos cortos separados, como un roce de piel |
+| `murmullo` | **Murmullo** | Ondulación lenta, suave, repetitiva |
+| `latido` | **Latido** | Dos pulsos juntos + pausa larga, como un corazón en reposo |
+| `onda` | **Onda** | Ciclo largo, sube y baja gradualmente |
+| `deriva` | **Deriva** | Ritmo irregular lento, flotante, sin urgencia |
+
+### ASCENSO (7) — deseo que escala, urgencia creciente
+
+Intensidad media y en aumento. El cuerpo pide más.
+
+| ID | Nombre | Vibe háptico |
+|----|--------|--------------|
+| `oleada` | **Oleada** | Ola que crece y cae, ciclos medianos |
+| `pulso` | **Pulso** | Ritmo constante acelerándose progresivamente |
+| `marea` | **Marea** | Ciclo muy largo, irresistible, como una fuerza que arrastra |
+| `vertigo` | **Vértigo** | Aceleración que marea, cada ciclo más corto |
+| `espiral` | **Espiral** | Cada repetición más intensa que la anterior |
+| `tormenta` | **Tormenta** | Caótico, eléctrico, ráfagas irregulares |
+| `tsunami` | **Tsunami** | Construcción lenta e imparable hacia un pico brutal |
+
+### CIMA (7) — explosión, clímax, el punto sin retorno
+
+Máxima intensidad. Fenómenos naturales y astronómicos que describen lo indescriptible.
+
+| ID | Nombre | Vibe háptico |
+|----|--------|--------------|
+| `pulse_nova` | **Pulse Nova** | Pulsos de alta energía en ráfagas cortas, luminosos |
+| `big_bang` | **Big Bang** | Un silencio → explosión total → expansión decreciente |
+| `earthquake` | **Earthquake** | Vibración profunda y sostenida, baja frecuencia máxima |
+| `volcano` | **Volcano** | Construcción lenta hasta erupción + lava sostenida |
+| `supernova` | **Supernova** | El pico absoluto: máxima amplitud, sostenida, luego silencio |
+| `singularity` | **Singularity** | Aceleración hasta el límite donde las reglas dejan de aplicar |
+| `aftershock` | **Aftershock** | Réplicas post-clímax: intensidad decreciente, eco del orgasmo |
 
 ---
 
 ## Detalle por milestone
 
-### M1 — Scaffolding Android (android-architect)
-- Init con Kotlin + Compose, Gradle Kotlin DSL, minSdk 26
-- Permiso VIBRATE en Manifest, portrait locked
-- Package base `com.gaston.vibro`
-- VivroTheme placeholder (Boudoir colors base)
-- Primer commit: hola-mundo compilable
+### M1 — Scaffolding Android (android-architect) ✅
+- Kotlin + Compose, Gradle Kotlin DSL, minSdk 26
+- Permiso VIBRATE, portrait locked
+- VivroTheme placeholder Boudoir colors
+- Proyecto abre en Android Studio y compila
 
 ### M2 — Motor háptico (haptics-engineer)
-- VibrationEffect.createWaveform con amplitudes
-- hasAmplitudeControl() + fallback PWM
-- HapticsEngine como singleton inyectable
-- HapticsViewModel con StateFlow: isPlaying, activePattern, intensityLevel
-- Cancelación automática al limpiar ViewModel
+- `VibrationEffect.createWaveform(timings, amplitudes, repeat)`
+- `hasAmplitudeControl()` + fallback PWM
+- `HapticsEngine` como singleton inyectable via ViewModel
+- `HapticsViewModel` con StateFlow: `isPlaying`, `activePattern`, `intensityLevel`, `activeRamp`
+- `vibrator.cancel()` en `onCleared()` y al pausar
 
 ### M3 — Controles UI básicos (haptics-engineer + compose-ui-designer)
 - Slider tiempo activo: 50ms–2000ms
 - Slider tiempo inactivo: 50ms–2000ms
-- Slider intensidad: 10 niveles discretos (Nivel 1 = amp 25, Nivel 10 = amp 255)
-- Indicador de estado (vibrando / detenido)
+- Slider intensidad: 10 niveles discretos (nivel 1 = amp 25, nivel 10 = amp 255)
+- Botón play/stop central
+- Indicador de estado animado
 
 ### M4 — Rampas (haptics-engineer)
-- 6 curvas discretizadas en 20 pasos
-- Se aplica al inicio (fade-in) y final (fade-out) del ciclo
-- UI: 6 chips con preview animado de la curva
+- 6 curvas: recta asc, recta desc, parábola, hipérbola, logarítmica, exponencial
+- Discretizadas en 20 pasos
+- Se aplican al fade-in y fade-out de cada ciclo
+- UI: 6 chips con preview visual de la curva
+- QA: diferencia perceptible entre recta y parábola en device
 
-### M5 — 20 patrones (haptics-engineer)
-- PatternsRegistry.kt con los 20 patrones definitivos
-- Timings + amplitudes calibrados para sentirse distintos
+### M5 — 21 patrones (haptics-engineer + skill pattern-composer)
+- `PatternsRegistry.kt` con los 21 patrones
+- Timings + amplitudes calibrados para sentirse distintos entre sí
+- `PatternSelector.kt`: grid por categoría (SUAVE / ASCENSO / CIMA)
 - QA háptico en device real
 
 ### M6 — UI completa + skins (compose-ui-designer)
-Skin Boudoir (default): `#0A0008` / `#E8185C` / `#C4A84A`, orquídea animada
-Skin Seda & Piel (bundled): `#150C0C` / `#C0143C` / `#F2A59D`, ondas cálidas
+**Boudoir (default):** `#0A0008` / `#E8185C` / `#C4A84A` — pétalos de orquídea animados
+**Seda & Piel (bundled):** `#150C0C` / `#C0143C` / `#F2A59D` — curvas cálidas
+Layout: canvas orgánico detrás, botón play grande, sliders abajo, selector de patrón arriba.
 
 ### M7 — Skins adicionales (compose-ui-designer)
-- 2 skins claros para uso diurno
+- 2 skins claros (uso diurno)
 - 2 skins explícitos (formas más directas)
 - Galería de skins con preview
 
 ### M8 — Favoritos (haptics-engineer)
-- DataStore: guardar configuración completa (patrón + intensidad + rampa + frec)
+- DataStore: guardar configuración completa (patrón + intensidad + rampa + frecuencia)
 - Nombre editable, swipe-to-delete
+- Exportar como JSON
 
 ### M9 — APK release (android-architect)
 - Ícono orgánico, splash, firma, build release
-- Distribución: APK directo
+- Distribución: APK directo (no Play Store en v1)
 
 ---
 
