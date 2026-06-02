@@ -1,140 +1,191 @@
-# ROADMAP.md — simpleProjects / Vibro
+# ROADMAP — Vibro
 
-> Documento vivo. El estado actual siempre está en PROGRESS.md.
-
----
-
-## Visión del producto
-
-App Android nativa para controlar el motor de vibración del teléfono con fines de placer íntimo. Intensidad y rampas reales usando `VibrationEffect.createWaveform()` (API 26+). Estética sensual, adulta y elegante con sistema de skins intercambiables.
+> App Android nativa (Kotlin + Jetpack Compose) para control del motor de vibración.
+> minSdk 26 — VibrationEffect con amplitudes reales.
 
 ---
 
 ## Milestones
 
-| Milestone | Agente principal | Descripción | Estado |
-|-----------|-----------------|-------------|--------|
-| M0 | setup | Fundaciones PM | ✅ Hecho |
-| M1 | android-architect | Scaffolding Android project | ✅ Hecho |
-| M2 | haptics-engineer | Motor háptico nativo + VibrationEffect | ⬜ Pendiente |
-| M3 | haptics-engineer + compose-ui-designer | Controles frecuencia/intensidad | ⬜ Pendiente |
-| M4 | haptics-engineer | 6 rampas de transición + preview visual | ⬜ Pendiente |
-| M5 | haptics-engineer | 21 patrones preset | ⬜ Pendiente |
-| M6 | compose-ui-designer | Skins Boudoir + Seda & Piel, UI completa | ⬜ Pendiente |
-| M7 | compose-ui-designer | Skins claros y explícitos adicionales | ⬜ Pendiente |
-| M8 | haptics-engineer | Favoritos y patrones custom | ⬜ Pendiente |
-| M9 | android-architect | Build APK release, ícono, splash | ⬜ Pendiente |
+| # | Nombre | Estado | Responsable |
+|---|--------|--------|-------------|
+| M0 | Fundaciones PM | ✅ Completo | setup |
+| M1 | Android project scaffold | ✅ Completo | android-architect |
+| M2 | Motor háptico nativo | ✅ Completo | haptics-engineer |
+| M3 | Controles UI básicos | ✅ Completo | compose-ui-designer |
+| M4 | Rampas de transición (UI) | 🔜 Siguiente | compose-ui-designer |
+| M5 | 21 patrones preset | ✅ Completo (data) | haptics-engineer |
+| M6 | Identidad visual completa | 🔜 Pendiente | compose-ui-designer |
+| M7 | Skins adicionales | 🔜 Pendiente | compose-ui-designer |
+| M8 | Favoritos (DataStore) | 🔜 Pendiente | haptics-engineer |
+| M9 | Build APK release | 🔜 Pendiente | android-architect |
+| M10 | Creador de patrones custom | 🔜 Pendiente | haptics-engineer + compose-ui-designer |
+| M11 | Backend comunidad Vibro | 🔜 Pendiente (backend TBD) | android-architect |
+| M12 | UI comunidad — explorar + publicar | 🔜 Pendiente | compose-ui-designer |
 
 ---
 
-## Los 21 patrones — naming definitivo
+## Patrones preset (21, definitivos)
 
-Tres categorías que narran una progresión de intensidad:
+### SUAVE
+| ID | Nombre | Vibe |
+|----|--------|------|
+| suave_caricia | Caricia | Roce continuo y suave, sin interrupciones |
+| suave_susurro | Susurro | Casi imperceptible, como un aliento |
+| suave_roce | Roce | Toque breve, larga pausa |
+| suave_murmullo | Murmullo | Aleteo rápido y suave |
+| suave_latido | Latido | Ritmo lub-dub del corazón |
+| suave_onda | Onda | Ola que sube y baja |
+| suave_deriva | Deriva | Lenta, soñadora, hipnótica |
 
-### SUAVE (7) — inicio, exploración, calidez
+### ASCENSO
+| ID | Nombre | Vibe |
+|----|--------|------|
+| ascenso_oleada | Oleada | Ola que crece en intensidad |
+| ascenso_pulso | Pulso | Pulso fuerte y rítmico |
+| ascenso_marea | Marea | Marea poderosa y lenta |
+| ascenso_vertigo | Vértigo | Escala sin aviso, desorientador |
+| ascenso_espiral | Espiral | Se aprieta y acelera |
+| ascenso_tormenta | Tormenta | Turbulenta e irregular |
+| ascenso_tsunami | Tsunami | Una ola imparable |
 
-Sensaciones sutiles, casi imperceptibles. El punto de partida.
-
-| ID | Nombre | Vibe háptico |
-|----|--------|--------------|
-| `caricia` | **Caricia** | Toque suavísimo, intermitente, casi no se siente |
-| `susurro` | **Susurro** | Vibración muy fina y rápida, baja amplitud constante |
-| `roce` | **Roce** | Pulsos cortos separados, como un roce de piel |
-| `murmullo` | **Murmullo** | Ondulación lenta, suave, repetitiva |
-| `latido` | **Latido** | Dos pulsos juntos + pausa larga, como un corazón en reposo |
-| `onda` | **Onda** | Ciclo largo, sube y baja gradualmente |
-| `deriva` | **Deriva** | Ritmo irregular lento, flotante, sin urgencia |
-
-### ASCENSO (7) — deseo que escala, urgencia creciente
-
-Intensidad media y en aumento. El cuerpo pide más.
-
-| ID | Nombre | Vibe háptico |
-|----|--------|--------------|
-| `oleada` | **Oleada** | Ola que crece y cae, ciclos medianos |
-| `pulso` | **Pulso** | Ritmo constante acelerándose progresivamente |
-| `marea` | **Marea** | Ciclo muy largo, irresistible, como una fuerza que arrastra |
-| `vertigo` | **Vértigo** | Aceleración que marea, cada ciclo más corto |
-| `espiral` | **Espiral** | Cada repetición más intensa que la anterior |
-| `tormenta` | **Tormenta** | Caótico, eléctrico, ráfagas irregulares |
-| `tsunami` | **Tsunami** | Construcción lenta e imparable hacia un pico brutal |
-
-### CIMA (7) — explosión, clímax, el punto sin retorno
-
-Máxima intensidad. Fenómenos naturales y astronómicos que describen lo indescriptible.
-
-| ID | Nombre | Vibe háptico |
-|----|--------|--------------|
-| `pulse_nova` | **Pulse Nova** | Pulsos de alta energía en ráfagas cortas, luminosos |
-| `big_bang` | **Big Bang** | Un silencio → explosión total → expansión decreciente |
-| `earthquake` | **Earthquake** | Vibración profunda y sostenida, baja frecuencia máxima |
-| `volcano` | **Volcano** | Construcción lenta hasta erupción + lava sostenida |
-| `supernova` | **Supernova** | El pico absoluto: máxima amplitud, sostenida, luego silencio |
-| `singularity` | **Singularity** | Aceleración hasta el límite donde las reglas dejan de aplicar |
-| `aftershock` | **Aftershock** | Réplicas post-clímax: intensidad decreciente, eco del orgasmo |
+### CIMA
+| ID | Nombre | Vibe |
+|----|--------|------|
+| cima_pulse_nova | Pulse Nova | Pulsos rápidos como estrella de neutrones |
+| cima_big_bang | Big Bang | Expansión de cero al universo |
+| cima_earthquake | Earthquake | Suelo que tiembla sin parar |
+| cima_volcano | Volcano | Erupcón que escala |
+| cima_supernova | Supernova | Explosión + máximo sostenido |
+| cima_singularity | Singularity | Máximo absoluto, sostenido |
+| cima_aftershock | Aftershock | Ecos que disminuyen |
 
 ---
 
-## Detalle por milestone
+## M10 — Creador de patrones custom
 
-### M1 — Scaffolding Android (android-architect) ✅
-- Kotlin + Compose, Gradle Kotlin DSL, minSdk 26
-- Permiso VIBRATE, portrait locked
-- VivroTheme placeholder Boudoir colors
-- Proyecto abre en Android Studio y compila
+### Tres modos de creación
 
-### M2 — Motor háptico (haptics-engineer)
-- `VibrationEffect.createWaveform(timings, amplitudes, repeat)`
-- `hasAmplitudeControl()` + fallback PWM
-- `HapticsEngine` como singleton inyectable via ViewModel
-- `HapticsViewModel` con StateFlow: `isPlaying`, `activePattern`, `intensityLevel`, `activeRamp`
-- `vibrator.cancel()` en `onCleared()` y al pausar
+#### Modo A: Whiteboard (principal)
+El usuario dibuja la forma de onda directamente en un canvas:
+- **Eje X** = tiempo (el ancho del canvas representa la duración total del ciclo)
+- **Eje Y** = intensidad (arriba = máximo, abajo = silencio)
+- El dedo dibuja la curva de amplitud
+- Cuando el dedo toca = motor encendido; cuando se levanta = off
+- La curva se muestrea cada ~20ms para generar `timings[] + amplitudes[]`
+- Grid de referencia (líneas de cuadrícula) para orientación
+- Botón “sentir” para previsualizar hapticamente mientras dibújas
+- Implementación: `WaveformCanvas.kt` con `Modifier.pointerInput` + `Canvas` composable
 
-### M3 — Controles UI básicos (haptics-engineer + compose-ui-designer)
-- Slider tiempo activo: 50ms–2000ms
-- Slider tiempo inactivo: 50ms–2000ms
-- Slider intensidad: 10 niveles discretos (nivel 1 = amp 25, nivel 10 = amp 255)
-- Botón play/stop central
-- Indicador de estado animado
+#### Modo B: Tap-to-record
+- Un área grande tactil en el centro
+- Cada toque = pulso (duración = tiempo que se mantiene el dedo)
+- El gap entre toques = pausa
+- La intensidad puede fijarse antes o variarse con la presión (si el device la soporta)
+- Preview visual de la onda generada en tiempo real
+- Implementación: `TapRecorder.kt` con `detectTapGestures` + timer
 
-### M4 — Rampas (haptics-engineer)
-- 6 curvas: recta asc, recta desc, parábola, hipérbola, logarítmica, exponencial
-- Discretizadas en 20 pasos
-- Se aplican al fade-in y fade-out de cada ciclo
-- UI: 6 chips con preview visual de la curva
-- QA: diferencia perceptible entre recta y parábola en device
+#### Modo C: Editor por segmentos
+- Lista de segmentos: cada uno tiene duración (ms) + amplitud (0-255)
+- Drag-to-reorder, swipe-to-delete
+- Agregar segmento: aparece row con sliders
+- Vista de onda vectorial arriba que se actualiza en tiempo real
+- El modo más técnico y preciso
+- Implementación: `SegmentEditor.kt` con `LazyColumn` + `DragAndDropColumn`
 
-### M5 — 21 patrones (haptics-engineer + skill pattern-composer)
-- `PatternsRegistry.kt` con los 21 patrones
-- Timings + amplitudes calibrados para sentirse distintos entre sí
-- `PatternSelector.kt`: grid por categoría (SUAVE / ASCENSO / CIMA)
-- QA háptico en device real
+### Flujo de creación
+```
+[+] Nuevo patrón
+       ↓
+   elegir modo
+  (A | B | C)
+       ↓
+  crear waveform
+       ↓
+  sentir (preview)
+       ↓
+  (opcional) refinar en editor de segmentos
+       ↓
+  nombrar + categorizar
+       ↓
+  guardar local  →  [publicar en comunidad]
+```
 
-### M6 — UI completa + skins (compose-ui-designer)
-**Boudoir (default):** `#0A0008` / `#E8185C` / `#C4A84A` — pétalos de orquídea animados
-**Seda & Piel (bundled):** `#150C0C` / `#C0143C` / `#F2A59D` — curvas cálidas
-Layout: canvas orgánico detrás, botón play grande, sliders abajo, selector de patrón arriba.
-
-### M7 — Skins adicionales (compose-ui-designer)
-- 2 skins claros (uso diurno)
-- 2 skins explícitos (formas más directas)
-- Galería de skins con preview
-
-### M8 — Favoritos (haptics-engineer)
-- DataStore: guardar configuración completa (patrón + intensidad + rampa + frecuencia)
-- Nombre editable, swipe-to-delete
-- Exportar como JSON
-
-### M9 — APK release (android-architect)
-- Ícono orgánico, splash, firma, build release
-- Distribución: APK directo (no Play Store en v1)
+### Persistencia local
+- **Room DB** (no DataStore — los patrones son listas de longitud variable)
+- Entidad: `CustomPatternEntity` con `timingsJson` + `amplitudesJson` (TypeConverter)
+- DAO: CRUD + query por categoría + query por `isPublished`
+- Repository: `CustomPatternRepository` que expone `Flow<List<CustomPattern>>`
+- Los patrones propios aparecen en el selector principal con badge 📌
 
 ---
 
-## Fuera de scope v1
+## M11 — Backend comunidad Vibro
 
-- Bluetooth / sync con dispositivos externos
-- Control remoto en pareja vía red
-- Backend / cuentas de usuario
-- Play Store (política de contenido)
+> **Backend TBD** — a decidir cuando Gastón tenga PC
+
+Opciones evaluadas:
+- **Firebase** — Firestore + Auth (Google Sign-In). SDK oficial Kotlin/Android. Gratis hasta escala moderada.
+- **Supabase** — PostgreSQL + REST + Realtime. Open source, self-hosteable, TypeScript edge functions.
+
+### Endpoints necesarios (independientes del stack)
+- `POST /patterns` — subir patrón (autenticado)
+- `GET /patterns` — listar comunidad (paginado, filtros por categoría/popularidad/nuevo)
+- `GET /patterns/:id` — patrón individual
+- `POST /patterns/:id/like` — dar like
+- `GET /users/:id/patterns` — patrones de un usuario
+
+### Autenticación
+- Google Sign-In (cero fricción en Android, no requiere email/password)
+- Alias público opcional (ej. “vibro_gaston”)
+
+### Moderación
+- Los patrones se publican inmediatamente pero pueden ser reportados
+- Flag `isFlagged` en base de datos — revisado manualmente
+- Los patrones CIMA van con advertencia de intensidad
+
+---
+
+## M12 — UI comunidad
+
+- **Pantalla Comunidad**: tab en bottom nav (icono globo)
+- **Browse**: grid de patrones, filtros (Nuevo / Popular / Categoría)
+- **Card de patrón**: nombre, autor, categoría, likes, mini-preview waveform
+- **Preview antes de descargar**: sentir el patrón antes de guardarlo
+- **Publicar**: botón en pantalla de creación, agrega nombre del autor y descripción
+- **Perfil**: mis patrones publicados, likes recibidos, patrones descargados
+
+---
+
+## 6 curvas de rampa
+
+| Tipo | Descripción | Sensación |
+|------|-------------|----------|
+| LINEAR_UP | Crece lineal | Entrada suave y predecible |
+| LINEAR_DOWN | Decrece lineal | Ataque directo, salida suave |
+| PARABOLA | x² — lento al inicio | Sorpresa tarda en llegar |
+| HYPERBOLA | 1-(1-x)² — rápido al inicio | Impacto inmediato, plateau |
+| LOGARITHMIC | ln(x) — subida rápida | Sube rapido, se mantiene |
+| EXPONENTIAL | e^x — surge al final | Calma, calma... IMPACTO |
+
+---
+
+## Skins
+
+### Incluidos (M6)
+- **Boudoir** (default): `#0A0008` / `#E8185C` / `#C4A84A` — orquídea animada, tipografía elegante
+- **Seda & Piel**: `#150C0C` / `#C0143C` / `#F2A59D` — curvas cálidas, sensual
+
+### Adicionales (M7)
+- 2 skins claros (paleta luminosa, uso diurno)
+- 2 skins explícitos (formas más directas, activo/off toggle en settings)
+
+---
+
+## Fuera de scope
+
 - iOS
+- Bluetooth / control remoto
+- Play Store
+- Detección de ritmo desde música
+- Llamadas / notificaciones integradas
