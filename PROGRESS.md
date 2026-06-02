@@ -23,15 +23,21 @@
 
 ## M1 — Android project scaffold
 
-[ ] Init proyecto Android en `app/` (Kotlin + Compose)
-[ ] `build.gradle.kts` con minSdk 26, targetSdk 35, Compose habilitado
-[ ] `AndroidManifest.xml` con permiso `VIBRATE`
-[ ] Estructura de packages: `haptics/`, `ui/`, `data/`
-[ ] Hola-mundo: pantalla vacía que levanta sin errores
-[ ] `MainActivity.kt` con Compose entry point
-[ ] Smoke test: compilar localmente (checkpoint manual Gastón)
+[X] `settings.gradle.kts` — nombre del proyecto, include :app
+[X] `build.gradle.kts` (root) — plugins classpath via version catalog
+[X] `gradle/libs.versions.toml` — version catalog con AGP, Kotlin, Compose BOM, DataStore, Google Fonts
+[X] `gradle/wrapper/gradle-wrapper.properties` — Gradle 8.9
+[X] `app/build.gradle.kts` — minSdk 26, targetSdk 35, Compose habilitado, dependencias
+[X] `app/src/main/AndroidManifest.xml` — permiso VIBRATE, portrait locked, no action bar
+[X] `app/src/main/kotlin/com/gaston/vibro/MainActivity.kt` — Compose entry point con VivroTheme
+[X] `app/src/main/kotlin/com/gaston/vibro/ui/theme/VivroTheme.kt` — placeholder Boudoir colors
+[X] `app/src/main/res/values/strings.xml` — app_name = vibro
+[X] `app/src/main/res/values/themes.xml` — Theme.Vibro base
+[X] `app/proguard-rules.pro`
+[ ] Smoke test: `./gradlew assembleDebug` → BUILD SUCCESSFUL (checkpoint manual Gastón)
 
-> Responsable: android-architect
+> Completado por: android-architect | 2026-06-02
+> Nota técnica: minSdk 26 es el mínimo para VibrationEffect con amplitudes. No bajar bajo ningún concepto.
 
 ---
 
@@ -39,10 +45,10 @@
 
 [ ] `HapticsConstants.kt` — constantes de amplitud, duraciones base
 [ ] `VivroPattern.kt` — data class + enum `PatternCategory`
-[ ] `RampFunction.kt` — typealias + 6 implementaciones de curvas
+[ ] `RampFunctions.kt` — typealias + 6 implementaciones de curvas
 [ ] `HapticsEngine.kt` — wrapper de VibrationEffect, detección `hasAmplitudeControl()`, fallback
 [ ] `HapticsViewModel.kt` — estado reactivo con StateFlow
-[ ] Test de smoke háptico en device (checkpoint manual Gastón)
+[ ] Smoke test háptico en device (checkpoint manual Gastón)
 
 > Responsable: haptics-engineer
 
@@ -72,10 +78,10 @@
 
 ## M5 — 20 patrones preset
 
-[ ] `PatternsRegistry.kt` — los 20 patrones definidos
-[ ] 7 patrones categoría CIRCULATORIO
-[ ] 7 patrones categoría ELEMENTO
-[ ] 6 patrones categoría FENOMENO
+[ ] `PatternsRegistry.kt` — los 20 patrones definidos con naming definitivo
+[ ] 7 patrones CIRCULATORIO: Latido, Pulso, Oleada, Arrebato, Ansia, Umbral, Cima
+[ ] 7 patrones ELEMENTO: Brasa, Lava, Vapor, Llama, Marea, Tormenta, Ardor
+[ ] 6 patrones FENOMENO: Éxtasis, Vértigo, Frenesí, Trance, Delirio, Temblor
 [ ] `PatternSelector.kt` — UI grid/lista para elegir patrón
 [ ] QA háptico de los 20 patrones en device
 
@@ -83,13 +89,14 @@
 
 ---
 
-## M6 — Identidad visual completa (skin Boudoir default)
+## M6 — Identidad visual completa
 
-[ ] `VivroColors.kt`, `VivroTypography.kt`, `VivroTheme.kt`
+[ ] `VivroColors.kt`, `VivroTypography.kt` — sistema de colores/tipografía por skin
 [ ] `VivroSkin.kt` data class + `SkinRegistry.kt`
-[ ] Skin Boudoir: fondo `#0A0008`, fucsia `#E8185C`, dorado `#C4A84A`
-[ ] Canvas orgánico: formas de orquídea/pétalos que pulsan con la vibración
+[ ] Skin Boudoir completo: fondo `#0A0008`, fucsia `#E8185C`, dorado `#C4A84A`
+[ ] Canvas orgánico: pétalos de orquídea que pulsan con la vibración
 [ ] Skin Seda & Piel: fondo `#150C0C`, carmesí `#C0143C`, rosa piel `#F2A59D`
+[ ] Canvas Seda: curvas cálidas y ondas
 [ ] Selector de skins in-app
 [ ] Persistencia del skin activo en DataStore
 
@@ -126,7 +133,7 @@
 [ ] Firma del APK (keystore — manual Gastón)
 [ ] Build release: `./gradlew assembleRelease`
 [ ] Matriz de QA completa en device real
-[ ] APK distribuible por APK directo (no Play Store por ahora)
+[ ] APK distribuible
 
 > Responsable: android-architect
 
@@ -134,4 +141,5 @@
 
 ## Notas técnicas acumuladas
 
-_(agentes agregan aquí gotchas y decisiones técnicas a medida que aparecen)_
+- **minSdk 26 innegociable:** `VibrationEffect.createWaveform(timings, amplitudes, repeat)` solo existe desde API 26. Sin esto no hay control de intensidad real.
+- **hasAmplitudeControl():** no es universal. Siempre implementar fallback PWM (duty-cycle via timings).
