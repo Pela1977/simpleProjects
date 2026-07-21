@@ -26,7 +26,8 @@ fun IntensitySlider(
     onLevelChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
     activeColor: Color = Color(0xFFE8185C),
-    inactiveColor: Color = Color(0x33E8185C)
+    inactiveColor: Color = Color(0x33E8185C),
+    textColor: Color = Color.White
 ) {
     Column(
         modifier = modifier,
@@ -34,7 +35,7 @@ fun IntensitySlider(
     ) {
         Text(
             text = "Intensidad — Nivel ${level + 1}",
-            color = Color.White.copy(alpha = 0.7f),
+            color = textColor.copy(alpha = 0.7f),
             style = MaterialTheme.typography.labelMedium
         )
         Row(

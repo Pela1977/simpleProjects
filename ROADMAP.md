@@ -13,13 +13,13 @@
 | M1 | Android project scaffold | ✅ Completo | android-architect |
 | M2 | Motor háptico nativo | ✅ Completo | haptics-engineer |
 | M3 | Controles UI básicos | ✅ Completo | compose-ui-designer |
-| M4 | Rampas de transición (UI) | 🔜 Siguiente | compose-ui-designer |
-| M5 | 21 patrones preset | ✅ Completo (data) | haptics-engineer |
-| M6 | Identidad visual completa | 🔜 Pendiente | compose-ui-designer |
-| M7 | Skins adicionales | 🔜 Pendiente | compose-ui-designer |
-| M8 | Favoritos (DataStore) | 🔜 Pendiente | haptics-engineer |
-| M9 | Build APK release | 🔜 Pendiente | android-architect |
-| M10 | Creador de patrones custom | 🔜 Pendiente | haptics-engineer + compose-ui-designer |
+| M4 | Rampas de transición (UI) | ✅ Completo | compose-ui-designer |
+| M5 | 21 patrones preset | ✅ Completo | haptics-engineer |
+| M6 | Identidad visual completa | ✅ Completo | compose-ui-designer |
+| M7 | Skins adicionales | ✅ Completo (6 skins) | compose-ui-designer |
+| M8 | Favoritos (DataStore) | ✅ Completo | haptics-engineer |
+| M9 | Build APK release | 🔶 Parcial (ícono+splash; firma y build = manual Gastón) | android-architect |
+| M10 | Creador de patrones custom | ✅ Completo | haptics-engineer + compose-ui-designer |
 | M11 | Backend comunidad Vibro | 🔜 Pendiente (backend TBD) | android-architect |
 | M12 | UI comunidad — explorar + publicar | 🔜 Pendiente | compose-ui-designer |
 

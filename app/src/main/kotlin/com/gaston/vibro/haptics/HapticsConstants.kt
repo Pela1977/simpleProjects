@@ -12,6 +12,12 @@ object HapticsConstants {
     const val MIN_OFF_TIME_MS = 10L
     const val MAX_OFF_TIME_MS = 800L
 
+    // Límite físico de un tramo individual del waveform (distinto del rango
+    // de los sliders on/off): los timings internos de un patrón no deben
+    // deformarse al rango de la UI.
+    const val MIN_TIMING_MS = 10L
+    const val MAX_TIMING_MS = 3000L
+
     // Prepended ramp: N steps × STEP_DURATION_MS each
     const val RAMP_STEPS = 8
     const val RAMP_STEP_DURATION_MS = 25L

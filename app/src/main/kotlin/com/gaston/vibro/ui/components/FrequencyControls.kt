@@ -22,7 +22,8 @@ fun FrequencyControls(
     onOnTimeChange: (Long) -> Unit,
     onOffTimeChange: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    accentColor: Color = Color(0xFFE8185C)
+    accentColor: Color = Color(0xFFE8185C),
+    textColor: Color = Color.White
 ) {
     Column(
         modifier = modifier,
@@ -34,7 +35,8 @@ fun FrequencyControls(
             minValue = HapticsConstants.MIN_ON_TIME_MS,
             maxValue = HapticsConstants.MAX_ON_TIME_MS,
             onValueChange = onOnTimeChange,
-            accentColor = accentColor
+            accentColor = accentColor,
+            textColor = textColor
         )
         FrequencySlider(
             label = "Pausa",
@@ -42,7 +44,8 @@ fun FrequencyControls(
             minValue = HapticsConstants.MIN_OFF_TIME_MS,
             maxValue = HapticsConstants.MAX_OFF_TIME_MS,
             onValueChange = onOffTimeChange,
-            accentColor = accentColor.copy(alpha = 0.7f)
+            accentColor = accentColor.copy(alpha = 0.7f),
+            textColor = textColor
         )
     }
 }
@@ -54,7 +57,8 @@ private fun FrequencySlider(
     minValue: Long,
     maxValue: Long,
     onValueChange: (Long) -> Unit,
-    accentColor: Color
+    accentColor: Color,
+    textColor: Color
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(
@@ -64,7 +68,7 @@ private fun FrequencySlider(
         ) {
             Text(
                 text = label,
-                color = Color.White.copy(alpha = 0.7f),
+                color = textColor.copy(alpha = 0.7f),
                 style = MaterialTheme.typography.labelMedium
             )
             Text(

@@ -1,3 +1,8 @@
 <resources>
-    <style name="Theme.Vibro" parent="android:Theme.Material.NoActionBar" />
+    <!-- Splash mínimo: fondo Boudoir mientras carga Compose -->
+    <style name="Theme.Vibro" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/vibro_background</item>
+        <item name="android:statusBarColor">@color/vibro_background</item>
+        <item name="android:navigationBarColor">@color/vibro_background</item>
+    </style>
 </resources>

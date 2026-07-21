@@ -78,11 +78,11 @@
 
 ## M4 — Rampas de transición (UI)
 
-[ ] `RampSelector.kt` — grid 2×3 con SVG preview de cada curva
-[ ] Integración en pantalla principal
-[ ] QA en device: diferencia perceptible entre las 6 curvas
+[X] `RampSelector.kt` — grid 2×3, curva real muestreada de la misma RampFunction del engine
+[X] Integración en MainScreen
+[ ] QA en device: diferencia perceptible entre las 6 curvas *(checkpoint manual Gastón)*
 
-> Responsable: compose-ui-designer
+> Completado por: compose-ui-designer | 2026-07-21
 
 ---
 
@@ -92,58 +92,62 @@
 [X] SUAVE: Caricia, Susurro, Roce, Murmullo, Latido, Onda, Deriva
 [X] ASCENSO: Oleada, Pulso, Marea, Vértigo, Espiral, Tormenta, Tsunami
 [X] CIMA: Pulse Nova, Big Bang, Earthquake, Volcano, Supernova, Singularity, Aftershock
-[ ] `PatternSelector.kt` — grid por categoría (en M6)
+[X] `PatternSelector.kt` — tabs por categoría + tab MÍOS + grid con mini-waveforms
 [ ] QA háptico *(checkpoint manual Gastón)*
 
-> Completado parcialmente por: haptics-engineer | 2026-06-02
+> Completado por: haptics-engineer + compose-ui-designer | 2026-07-21
 
 ---
 
 ## M6 — Identidad visual completa
 
-[ ] `VivroColors.kt`, `VivroTypography.kt`
-[ ] `VivroSkin.kt` + `SkinRegistry.kt`
-[ ] Skin Boudoir: `#0A0008` / `#E8185C` / `#C4A84A` + OrganicCanvas orquídea
-[ ] Skin Seda & Piel: `#150C0C` / `#C0143C` / `#F2A59D` + curvas cálidas
-[ ] `MainScreen.kt` — layout completo
-[ ] `PatternSelector.kt` — grid con selección activa
-[ ] `RampSelector.kt` — 6 chips SVG
-[ ] Selector de skins in-app
-[ ] Persistencia skin en DataStore
+[X] `VivroSkin.kt` + `VivroSkinColors` + enum CanvasStyle
+[X] `SkinRegistry.kt` — 6 skins bundled
+[X] `VivroTypography.kt` — serif para display, sans para cuerpo
+[X] `VivroTheme.kt` — CompositionLocal LocalVivroSkin + MaterialTheme dark/light
+[X] Skin Boudoir: `#0A0008` / `#E8185C` / `#C4A84A` + OrganicCanvas orquídea (5 pétalos animados)
+[X] Skin Seda & Piel: `#150C0C` / `#C0143C` / `#F2A59D` + óvalos de seda concéntricos
+[X] `MainScreen.kt` — layout completo: canvas + play + intensidad + frecuencia + rampas + patrones + favorito
+[X] `SkinsScreen.kt` — galería con paleta preview, badge 18+, selección persistida
+[X] `SkinRepository.kt` — skin activo en DataStore
+[X] Navegación bottom-nav propia (Inicio / Crear / Favoritos / Skins) sin dependencia extra
 
-> Responsable: compose-ui-designer
+> Completado por: compose-ui-designer | 2026-07-21
 
 ---
 
 ## M7 — Skins adicionales
 
-[ ] 2 skins claros
-[ ] 2 skins explícitos
-[ ] Galería de skins
+[X] 2 skins claros: **Alba** (crema/coral) y **Nácar** (perla/lila)
+[X] 2 skins explícitos: **Rubí** (anillos de choque) y **Obsidiana** (rayos radiales) — badge 18+
+[X] Galería de skins con preview de paleta
+[X] Cada skin tiene su propio CanvasStyle (ORCHID, SILK, DAWN, PEARL, EMBER, NOIR)
 
-> Responsable: compose-ui-designer
+> Completado por: compose-ui-designer | 2026-07-21
 
 ---
 
 ## M8 — Favoritos
 
-[ ] `FavoritesRepository.kt` con DataStore
-[ ] Guardar configuración completa (patrón + intensidad + rampa + frecuencia)
-[ ] UI favoritos: lista, editar nombre, swipe-to-delete
+[X] `FavoritesRepository.kt` — DataStore + JSON (org.json, sin dependencias nuevas)
+[X] Guardar configuración completa (patrón + intensidad + rampa + frecuencia)
+[X] `FavoritesScreen.kt` — lista, tap para reproducir, borrar
+[X] Diálogo "Guardar como favorito" en MainScreen
+[ ] QA en device *(checkpoint manual Gastón)*
 
-> Responsable: haptics-engineer
+> Completado por: haptics-engineer | 2026-07-21
 
 ---
 
 ## M9 — Build APK release
 
-[ ] Ícono orgánico
-[ ] Splash screen
+[X] Ícono adaptativo: orquídea vectorial 5 pétalos + centro dorado (`ic_launcher_foreground.xml`)
+[X] Splash mínimo: windowBackground Boudoir en `themes.xml`
 [ ] Firma APK *(keystore — manual Gastón)*
-[ ] `./gradlew assembleRelease` → BUILD SUCCESSFUL
-[ ] QA completo en device
+[ ] `./gradlew assembleRelease` → BUILD SUCCESSFUL *(manual Gastón)*
+[ ] QA completo en device *(manual Gastón)*
 
-> Responsable: android-architect
+> Completado parcialmente por: android-architect | 2026-07-21 (todo lo que no requiere PC)
 
 ---
 
@@ -151,15 +155,19 @@
 
 > Nueva feature aprobada por Gastón | 2026-06-02
 
-[ ] `WaveformCanvas.kt` — Modo whiteboard: dibujar curva en canvas (X=tiempo, Y=intensidad)
-[ ] `TapRecorder.kt` — Modo tap: grabar ritmo con el dedo, captura timing y amplitud
-[ ] `SegmentEditor.kt` — Modo editor: lista de segmentos con sliders, drag-to-reorder
-[ ] `PatternCreatorScreen.kt` — flujo completo: elegir modo → crear → preview → nombre → guardar
-[ ] Room DB: `CustomPatternEntity`, `CustomPatternDao`, `CustomPatternRepository`
-[ ] Integración en PatternSelector: los patrones propios aparecen con badge 📌
-[ ] `libs.versions.toml` y `app/build.gradle.kts` actualizados con Room
+[X] `WaveformCanvas.kt` — whiteboard: dibujo libre → detección de picos/valles → nodos arrastrables + Catmull-Rom · tap agrega nodo · tap largo borra · slider de duración de ciclo
+[X] `TapRecorder.kt` — grabación por toques con velocidad de captura 0.25×/0.5×/1×/2× (slow-mo normalizado), amplitud regulable, deshacer/limpiar
+[X] `SegmentEditor.kt` — tramos con sliders duración+amplitud, reordenar ▲▼, borrar, agregar pulso/pausa
+[X] `FractalExpander.kt` — Pattern DNA: eco ×0.5 + base + expansión ×2 atenuada, profundidad 1-3
+[X] `PatternMixer.kt` — Layer Mixer: hasta 4 capas con peso, muestreo 20ms, suma clampeada a 255
+[X] `MixerPanel.kt` — UI del mixer con preview en vivo y "usar como base"
+[X] `CreatorScreen.kt` — 4 modos (Dibujar/Grabar/Tramos/Mezclar) que convergen en la misma lista de segmentos → Sentir → nombrar+categorizar → guardar
+[X] `CustomPatternRepository.kt` — **DataStore+JSON en lugar de Room** (decisión: sin KSP en entorno sin compilación; migrable a Room)
+[X] `Segment.kt` + `SegmentTools` — sanitización, merge, conversión a VivroPattern
+[X] Integración en PatternSelector: tab MÍOS con borrar
+[ ] QA del creador en device *(checkpoint manual Gastón)*
 
-> Responsable: haptics-engineer + compose-ui-designer
+> Completado por: haptics-engineer + compose-ui-designer | 2026-07-21
 
 ---
 
@@ -202,3 +210,8 @@
 - **WaveformCanvas (M10):** muestrear gesto cada ~20ms → agrupar segmentos similares → VivroPattern.
 - **Room (M10):** usar TypeConverter para LongArray/IntArray → JSON. No DataStore (listas variables).
 - **Community (M11):** Google Sign-In recomendado — cero fricción en Android, funciona con Firebase y Supabase.
+- **Custom patterns:** persistidos en DataStore+JSON (no Room) — evita KSP en entorno sin build; decisión revisable.
+- **MIN/MAX_TIMING_MS (10/3000):** clamp físico de tramos del waveform, separado del rango de los sliders on/off — fix de bug que deformaba patrones rápidos (Earthquake 25ms) y custom largos.
+- **material-icons eliminado:** el artifact estaba mal nombrado en el toml (habría roto el build) y ningún archivo lo usa — play/stop se dibujan con Canvas.
+- **gradlew ausente:** el wrapper script no está en el repo. Android Studio lo regenera al abrir el proyecto (File → Sync), o `gradle wrapper` con Gradle local.
+- **onPause() → viewModel.stop():** regla de no-vibración-zombie implementada en MainActivity.

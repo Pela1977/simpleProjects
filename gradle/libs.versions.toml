@@ -8,7 +8,6 @@ lifecycleRuntime = "2.8.7"
 activityCompose  = "1.9.3"
 datastorePreferences = "1.1.1"
 uiGoogleFonts  = "1.7.6"
-materialIcons  = "1.7.6"
 # room         = "2.6.1"            # activar en M10
 junit          = "4.13.2"
 androidxTestExt = "1.2.1"
@@ -26,7 +25,6 @@ ui-tooling                = { group = "androidx.compose.ui",      name = "ui-too
 ui-tooling-preview        = { group = "androidx.compose.ui",      name = "ui-tooling-preview" }
 ui-test-junit4            = { group = "androidx.compose.ui",      name = "ui-test-junit4" }
 material3                 = { group = "androidx.compose.material3", name = "material3" }
-material-icons-core       = { group = "androidx.compose.material", name = "compose-material-icons-core", version.ref = "materialIcons" }
 datastore-preferences     = { group = "androidx.datastore",       name = "datastore-preferences",       version.ref = "datastorePreferences" }
 ui-google-fonts           = { group = "androidx.compose.ui",      name = "ui-text-google-fonts",         version.ref = "uiGoogleFonts" }
 # room-runtime             = { group = "androidx.room", name = "room-runtime", version.ref = "room" }  # M10

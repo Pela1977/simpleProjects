@@ -45,13 +45,9 @@ class HapticsEngine(context: Context) {
         val onScale = onTimeMs.toFloat() / HapticsConstants.BASE_ON_TIME_MS
         val offScale = offTimeMs.toFloat() / HapticsConstants.BASE_OFF_TIME_MS
         return LongArray(pattern.timings.size) { i ->
-            if (pattern.amplitudes[i] == 0) {
-                (pattern.timings[i] * offScale).toLong()
-                    .coerceIn(HapticsConstants.MIN_OFF_TIME_MS, HapticsConstants.MAX_OFF_TIME_MS)
-            } else {
-                (pattern.timings[i] * onScale).toLong()
-                    .coerceIn(HapticsConstants.MIN_ON_TIME_MS, HapticsConstants.MAX_ON_TIME_MS)
-            }
+            val scale = if (pattern.amplitudes[i] == 0) offScale else onScale
+            (pattern.timings[i] * scale).toLong()
+                .coerceIn(HapticsConstants.MIN_TIMING_MS, HapticsConstants.MAX_TIMING_MS)
         }
     }
 

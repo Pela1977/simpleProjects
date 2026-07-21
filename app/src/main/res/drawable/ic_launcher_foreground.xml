@@ -1,0 +1,40 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Orquídea estilizada: 5 pétalos fucsia + centro dorado -->
+    <group android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#E8185C"
+            android:fillAlpha="0.85"
+            android:pathData="M54,22 C60,32 60,44 54,50 C48,44 48,32 54,22 Z" />
+    </group>
+    <group android:rotation="72" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#E8185C"
+            android:fillAlpha="0.75"
+            android:pathData="M54,22 C60,32 60,44 54,50 C48,44 48,32 54,22 Z" />
+    </group>
+    <group android:rotation="144" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#C4157A"
+            android:fillAlpha="0.75"
+            android:pathData="M54,22 C60,32 60,44 54,50 C48,44 48,32 54,22 Z" />
+    </group>
+    <group android:rotation="216" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#C4157A"
+            android:fillAlpha="0.75"
+            android:pathData="M54,22 C60,32 60,44 54,50 C48,44 48,32 54,22 Z" />
+    </group>
+    <group android:rotation="288" android:pivotX="54" android:pivotY="54">
+        <path
+            android:fillColor="#E8185C"
+            android:fillAlpha="0.75"
+            android:pathData="M54,22 C60,32 60,44 54,50 C48,44 48,32 54,22 Z" />
+    </group>
+    <path
+        android:fillColor="#C4A84A"
+        android:pathData="M54,54 m-7,0 a7,7 0 1,1 14,0 a7,7 0 1,1 -14,0" />
+</vector>
